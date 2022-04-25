@@ -5,7 +5,7 @@ const CustomEvents = function() {
 CustomEvents.prototype.on = function(event, listener, options = {}) {
     if (typeof event !== 'string') throw 'Event needs to be a string!';
     if (typeof listener !== 'function') throw 'Listener needs to be a function!';
-    if (typeof event !== 'object') throw 'Options needs to be an object!';
+    if (typeof options !== 'object') throw 'Options needs to be an object!';
 
     if (!this.handlers.hasOwnProperty(event)) this.handlers[event] = [];
 
