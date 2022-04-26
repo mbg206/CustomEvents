@@ -24,6 +24,8 @@ CustomEvents.prototype.dispatchEvent = function(event, ...data) {
     if (typeof event !== 'string') throw 'Event needs to be a string!';
 
     let handlers = this.handlers[event];
+    if (!handlers) return;
+
     for (let i = 0; i < handlers.length;) {
         handlers[i][0](...data);
 
