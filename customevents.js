@@ -2,9 +2,9 @@ const CustomEvents = function() {
     this.handlers = {};
 }
 
-CustomEvents.prototype.on = function(event, listener, options = {}) {
+CustomEvents.prototype.on = function(event, callback, options = {}) {
     if (typeof event !== 'string') throw 'Event needs to be a string!';
-    if (typeof listener !== 'function') throw 'Listener needs to be a function!';
+    if (typeof callback !== 'function') throw 'Callback needs to be a function!';
     if (typeof options !== 'object') throw 'Options needs to be an object!';
 
     if (!this.handlers.hasOwnProperty(event)) this.handlers[event] = [];
@@ -13,12 +13,19 @@ CustomEvents.prototype.on = function(event, listener, options = {}) {
         'once': false
     }, options);
 
-    this.handlers[event].push([listener, opt]);
+    this.handlers[event].push([callback, opt]);
 }
 CustomEvents.prototype.clear = function(event) {
     if (typeof event !== 'string') throw 'Event needs to be a string!';
     this.handlers[event] = [];
 }
+
+CustomEvents.prototype.awaitEvent = function(event) {return new Promise(res => {
+    this.on(event, (...data) => {
+        if (data.length < 2) res(data[0]);
+        else res(data);
+    }, {once: true});
+})}
 
 CustomEvents.prototype.dispatchEvent = function(event, ...data) {
     if (typeof event !== 'string') throw 'Event needs to be a string!';
@@ -34,4 +41,4 @@ CustomEvents.prototype.dispatchEvent = function(event, ...data) {
     }
 }
 
-if (module && exports) module.exports = CustomEvents;
+if (typeof exports === 'object' && typeof module !== 'undefined') module.exports = CustomEvents;
