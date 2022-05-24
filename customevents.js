@@ -21,10 +21,7 @@ CustomEvents.prototype.clear = function(event) {
 }
 
 CustomEvents.prototype.awaitEvent = function(event) {return new Promise(res => {
-    this.on(event, (...data) => {
-        if (data.length < 2) res(data[0]);
-        else res(data);
-    }, {once: true});
+    this.on(event, (...data) => res(data), {once: true});
 })}
 
 CustomEvents.prototype.dispatchEvent = function(event, ...data) {
